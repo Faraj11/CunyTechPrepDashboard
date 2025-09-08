@@ -203,21 +203,21 @@ with col[1]:
 with col[2]:
     st.markdown('#### Top States')
 
-    st.dataframe(df_selected_year_sorted,
-                 column_order=("states", "population"),
-                 hide_index=True,
-                 width=None,
-                 column_config={
-                    "states": st.column_config.TextColumn(
-                        "States",
-                    ),
-                    "population": st.column_config.ProgressColumn(
-                        "Population",
-                        format="%f",
-                        min_value=0,
-                        max_value=max(df_selected_year_sorted.population),
-                     )}
-                 )
+    st.dataframe(
+        df_selected_year_sorted,
+        column_order=("states", "population"),
+        hide_index=True,
+        width="stretch",  # ← was None
+        column_config={
+            "states": st.column_config.TextColumn("States"),
+            "population": st.column_config.ProgressColumn(
+                "Population",
+                format="%.0f",  # cleaner than "%f" for counts
+                min_value=0,
+                max_value=float(df_selected_year_sorted.population.max()),
+            ),
+        },
+    )
     
     with st.expander('About', expanded=True):
         st.write('''
@@ -225,3 +225,4 @@ with col[2]:
             - :orange[**Gains/Losses**]: states with high inbound/ outbound migration for selected year
             - :orange[**States Migration**]: percentage of states with annual inbound/ outbound migration > 50,000
             ''')
+
