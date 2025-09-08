@@ -10,7 +10,7 @@ st.set_page_config(
     initial_sidebar_state="expanded")
 alt.themes.enable("dark")
 
-df_reshaped = pd.read_csv('C:/Users/arvid/Downloads/us-population-2010-2019-reshaped.csv')
+df_reshaped = pd.read_csv('data/us-population-2010-2019-reshaped.csv')
 
 with st.sidebar:
     st.title('🏂 US Population Dashboard')
@@ -200,3 +200,4 @@ with col[2]:
             - :orange[**Gains/Losses**]: states with high inbound/ outbound migration for selected year
             - :orange[**States Migration**]: percentage of states with annual inbound/ outbound migration > 50,000
             ''')
+
