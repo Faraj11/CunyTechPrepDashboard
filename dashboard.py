@@ -217,23 +217,23 @@ with col[1]:
     
 with col[2]:
     st.markdown('#### Top States')
-
-    st.dataframe(df_selected_year_sorted,
-                 column_order=("states", "population"),
-                 hide_index=True,
-                 width=None,
-                 column_config={
-                    "states": st.column_config.TextColumn(
-                        "States",
-                    ),
-                    "population": st.column_config.ProgressColumn(
-                        "Population",
-                        format="%f",
-                        min_value=0,
-                        max_value=max(df_selected_year_sorted.population),
-                     )}
-                 )
     
+    st.dataframe(
+        df_selected_year_sorted,
+        column_order=("states", "population"),
+        hide_index=True,
+        use_container_width=True,   # ✅ fill the column
+        column_config={
+            "states": st.column_config.TextColumn("States"),
+            "population": st.column_config.ProgressColumn(
+                "Population",
+                format="%d",                      # population is an integer
+                min_value=0,
+                max_value=int(df_selected_year_sorted.population.max()),
+            ),
+        },
+    )
+
     with st.expander('About', expanded=True):
         st.write('''
             - Data: [U.S. Census Bureau](https://www.census.gov/data/datasets/time-series/demo/popest/2010s-state-total.html).
