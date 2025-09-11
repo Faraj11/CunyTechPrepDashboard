@@ -60,20 +60,19 @@ df_reshaped = pd.read_csv('data/us-population-2010-2019-reshaped.csv')
 MIGRATION_THRESHOLD = 100_000
 
 with st.sidebar:
-    st.title('🏂 US Population Dashboard')
-    
+    st.title("US Population")
     year_list = list(df_reshaped.year.unique())[::-1]
-    
-    selected_year = st.selectbox('Select a year', year_list)
-    df_selected_year = df_reshaped[df_reshaped.year == selected_year]
-    df_selected_year_sorted = df_selected_year.sort_values(by="population", ascending=False)
+    selected_year = st.selectbox("Year", year_list)
 
+    st.markdown("**Display**")
+    color_theme_list = ['viridis', 'cividis', 'magma', 'plasma', 'inferno']
+    selected_color_theme = st.selectbox("Color theme", color_theme_list, index=0)
+
+    st.markdown("**Analysis**")
     MIGRATION_THRESHOLD = st.number_input(
-        "Migration Threshold",
-        min_value=10_000, max_value=1_000_000, step=10_000, value=100_000)
-    
-    color_theme_list = ['blues', 'greens', 'reds', 'rainbow', 'viridis']
-    selected_color_theme = st.selectbox('Select a color theme', color_theme_list)
+        "Migration threshold", min_value=10_000, max_value=1_000_000,
+        step=10_000, value=100_000, help="Used for inbound/outbound donut stats"
+    )
 
 def make_us_trend(df, metric="total"):
     nat = (df.groupby('year', as_index=False)
@@ -253,6 +252,7 @@ with col[2]:
         st.write("""
         - :orange[**States Migration**]: percentage of states with annual inbound/outbound migration > Migration Threshold (Value from filter on left)
         """)
+
 
 
 
