@@ -239,19 +239,6 @@ with col[2]:
     )
 
     with st.expander('About', expanded=True):
-    st.write("""
-                - :orange[**States Migration**]: percentage of states with annual inbound/outbound migration > 100,000
-    """)
-
-
-
-
-
-
-
-
-
-
-
-
-
+        st.write("""
+        - :orange[**States Migration**]: percentage of states with annual inbound/outbound migration > 100,000
+        """)
