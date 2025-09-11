@@ -57,6 +57,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 df_reshaped = pd.read_csv('data/us-population-2010-2019-reshaped.csv')
+MIGRATION_THRESHOLD = 100_000
 
 with st.sidebar:
     st.title('🏂 US Population Dashboard')
@@ -67,6 +68,10 @@ with st.sidebar:
     df_selected_year = df_reshaped[df_reshaped.year == selected_year]
     df_selected_year_sorted = df_selected_year.sort_values(by="population", ascending=False)
 
+    MIGRATION_THRESHOLD = st.number_input(
+        "Migration threshold",
+        min_value=10_000, max_value=1_000_000, step=10_000, value=100_000)
+    
     color_theme_list = ['blues', 'greens', 'reds', 'rainbow', 'viridis']
     selected_color_theme = st.selectbox('Select a color theme', color_theme_list)
 
@@ -184,11 +189,12 @@ with col[0]:
     st.markdown('#### States Migration')
 
     if selected_year > 2010:
-        df_greater_50000 = df_population_difference_sorted[df_population_difference_sorted.population_difference > 50000]
-        df_less_50000 = df_population_difference_sorted[df_population_difference_sorted.population_difference < -50000]
+        df_greater = df_population_difference_sorted[df_population_difference_sorted.population_difference > MIGRATION_THRESHOLD]
+        df_less = df_population_difference_sorted[df_population_difference_sorted.population_difference < -MIGRATION_THRESHOLD]
+
         
-        states_migration_greater = round((len(df_greater_50000)/df_population_difference_sorted.states.nunique())*100)
-        states_migration_less = round((len(df_less_50000)/df_population_difference_sorted.states.nunique())*100)
+        states_migration_greater = round((len(df_greater) / df_population_difference_sorted.states.nunique()) * 100)
+        states_migration_less    = round((len(df_less)    / df_population_difference_sorted.states.nunique()) * 100)
         donut_chart_greater = make_donut(states_migration_greater, 'Inbound Migration', 'green')
         donut_chart_less = make_donut(states_migration_less, 'Outbound Migration', 'red')
     else:
@@ -233,10 +239,10 @@ with col[2]:
     )
 
     with st.expander('About', expanded=True):
-        st.write('''
-            - Data: [U.S. Census Bureau](https://www.census.gov/data/datasets/time-series/demo/popest/2010s-state-total.html).
-            - :orange[**Gains/Losses**]: states with high inbound/ outbound migration for selected year
-            - :orange[**States Migration**]: percentage of states with annual inbound/ outbound migration > 50,000
-            ''')
+        st.write("""
+        - :orange[**States Migration**]: percentage of states with annual inbound/outbound migration > 100,000
+        """)
+
+
 
 
