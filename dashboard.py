@@ -59,7 +59,7 @@ df_reshaped = pd.read_csv('data/us-population-2010-2019-reshaped.csv')
 MIGRATION_THRESHOLD = 100_000
 
 with st.sidebar:
-    st.title('🏂 US Population Dashboard')
+    st.title('US Population Dashboard')
     
     year_list = list(df_reshaped.year.unique())[::-1]
     
@@ -252,6 +252,7 @@ with col[2]:
         st.write("""
         - :orange[**States Migration**]: percentage of states with annual inbound/outbound migration > Migration Threshold (Value from filter on left)
         """)
+
 
 
 
