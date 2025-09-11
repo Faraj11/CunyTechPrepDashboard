@@ -13,46 +13,46 @@ alt.themes.enable("dark")
 
 st.markdown("""
 <style>
+:root { --card-bg:#2f2f2f; --card-br:16px; --card-pad:18px; }
 
-[data-testid="block-container"] {
-    padding-left: 2rem;
-    padding-right: 2rem;
-    padding-top: 1rem;
-    padding-bottom: 0rem;
-    margin-bottom: -7rem;
+[data-testid="block-container"]{
+  padding: 1rem 2rem 0rem 2rem;
+}
+section.main > div { gap: 1rem !important; }
+
+.header-bar{
+  background: var(--card-bg);
+  border-radius: var(--card-br);
+  padding: 14px 18px;
+  margin-bottom: 8px;
+  display:flex; align-items:center; justify-content:space-between;
 }
 
-[data-testid="stVerticalBlock"] {
-    padding-left: 0rem;
-    padding-right: 0rem;
+.kpi{
+  background: var(--card-bg);
+  border-radius: var(--card-br);
+  padding: var(--card-pad);
 }
 
-[data-testid="stMetric"] {
-    background-color: #393939;
-    text-align: center;
-    padding: 15px 0;
+[data-testid="stMetric"]{
+  background: transparent;
+  text-align:center;
+  padding: 8px 0 0 0;
 }
 
-[data-testid="stMetricLabel"] {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
+/* Fix delta pill + arrow overlap and spacing */
 [data-testid="stMetricDelta"]{
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  display:inline-flex; align-items:center; gap:6px;
 }
-
 [data-testid="stMetricDeltaIcon-Up"],
 [data-testid="stMetricDeltaIcon-Down"]{
-  position: static; 
-  left: auto;
-  transform: none;
-  margin-right: 0; 
+  position: static; left:auto; transform:none; margin-right:0;
 }
 
+/* Sidebars a bit tighter */
+[data-testid="stSidebarNav"] + div [data-testid="stVerticalBlock"]{
+  gap: 0.5rem;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -253,5 +253,6 @@ with col[2]:
         st.write("""
         - :orange[**States Migration**]: percentage of states with annual inbound/outbound migration > Migration Threshold (Value from filter on left)
         """)
+
 
 
