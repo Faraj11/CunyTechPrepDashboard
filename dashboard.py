@@ -69,7 +69,7 @@ with st.sidebar:
     df_selected_year_sorted = df_selected_year.sort_values(by="population", ascending=False)
 
     MIGRATION_THRESHOLD = st.number_input(
-        "Migration threshold",
+        "Migration Threshold",
         min_value=10_000, max_value=1_000_000, step=10_000, value=100_000)
     
     color_theme_list = ['blues', 'greens', 'reds', 'rainbow', 'viridis']
@@ -240,5 +240,6 @@ with col[2]:
 
     with st.expander('About', expanded=True):
         st.write("""
-        - :orange[**States Migration**]: percentage of states with annual inbound/outbound migration > 100,000
+        - :orange[**States Migration**]: percentage of states with annual inbound/outbound migration > Migration Threshold (Value from filter on left)
         """)
+
