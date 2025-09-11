@@ -240,12 +240,10 @@ with col[2]:
 
     with st.expander('About', expanded=True):
     st.write(
-        f"""
-        - Data: [U.S. Census Bureau](https://www.census.gov/data/datasets/time-series/demo/popest/2010s-state-total.html).
+        f"""- Data: [U.S. Census Bureau](https://www.census.gov/data/datasets/time-series/demo/popest/2010s-state-total.html).
         - :orange[**Gains/Losses**]: states with high inbound/outbound migration for the selected year
-        - :orange[**States Migration**]: percentage of states with annual inbound/outbound migration > {format_number(MIGRATION_THRESHOLD)}
-        """
-    )
+        - :orange[**States Migration**]: percentage of states with annual inbound/outbound migration > {format_number(MIGRATION_THRESHOLD)}""")
+
 
 
 
