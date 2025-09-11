@@ -75,21 +75,32 @@ with st.sidebar:
     color_theme_list = ['blues', 'greens', 'reds', 'rainbow', 'viridis']
     selected_color_theme = st.selectbox('Select a color theme', color_theme_list)
 
-def make_heatmap(input_df, input_y, input_x, input_color, input_color_theme):
-    heatmap = alt.Chart(input_df).mark_rect().encode(
-            y=alt.Y(f'{input_y}:O', axis=alt.Axis(title="Year", titleFontSize=18, titlePadding=15, titleFontWeight=900, labelAngle=0)),
-            x=alt.X(f'{input_x}:O', axis=alt.Axis(title="", titleFontSize=18, titlePadding=15, titleFontWeight=900)),
-            color=alt.Color(f'max({input_color}):Q',
-                             legend=None,
-                             scale=alt.Scale(scheme=input_color_theme)),
-            stroke=alt.value('black'),
-            strokeWidth=alt.value(0.25),
-        ).properties(width=900
-        ).configure_axis(
-        labelFontSize=12,
-        titleFontSize=12
-        ) 
-    return heatmap
+def make_us_trend(df, metric="total"):
+    nat = (df.groupby('year', as_index=False)
+             .agg(total_pop=('population', 'sum'),
+                  mean_pop=('population', 'mean'),
+                  median_pop=('population', 'median')))
+
+    titles = {
+        "total":  "U.S. population (total)",
+        "mean":   "Average population per state",
+        "median": "Median population per state",
+    }
+    col_map = {"total": "total_pop", "mean": "mean_pop", "median": "median_pop"}
+    ycol = col_map[metric]
+    title = titles[metric]
+
+    chart = (alt.Chart(nat)
+             .mark_line(point=True)
+             .encode(
+                 x=alt.X('year:O', title='Year'),
+                 y=alt.Y(f'{ycol}:Q', title=title),
+                 tooltip=[alt.Tooltip('year:O', title='Year'),
+                          alt.Tooltip(f'{ycol}:Q', title=title, format=',')]
+             )
+             .properties(height=300, width=900))
+    return chart
+
     
 def make_choropleth(input_df, input_id, input_column, input_color_theme):
     choropleth = px.choropleth(input_df, locations=input_id, color=input_column, locationmode="USA-states",
@@ -216,8 +227,8 @@ with col[1]:
     choropleth = make_choropleth(df_selected_year, 'states_code', 'population', selected_color_theme)
     st.plotly_chart(choropleth, use_container_width=True)
     
-    heatmap = make_heatmap(df_reshaped, 'year', 'states', 'population', selected_color_theme)
-    st.altair_chart(heatmap, use_container_width=True)
+    st.markdown('#### U.S. Trend')
+    st.altair_chart(make_us_trend(df_reshaped, "total"), use_container_width=True)
     
 with col[2]:
     st.markdown('#### Top States')
@@ -242,4 +253,5 @@ with col[2]:
         st.write("""
         - :orange[**States Migration**]: percentage of states with annual inbound/outbound migration > Migration Threshold (Value from filter on left)
         """)
+
 
